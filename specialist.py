@@ -73,12 +73,12 @@ KNOWLEDGE_BASE = {
             ['IV', 'iv', 'I', 'I'],
             ['I', 'bIII', 'IV', 'I'],
             ['i', 'ii°', 'V', 'i'],
-            ['i', 'i(maj7)', 'VI', 'V'],
+            ['i', 'imaj7', 'VI', 'V'],
             ['i', 'iv', 'bVII', 'III'],
             ['i', 'bII', 'i', 'V']
         ]
     },
-    'dancante_groovy': {
+    'dance': {
         'description': 'Progressões cíclicas e rítmicas com uma sensação de movimento constante. Comuns em funk, disco, EDM e reggae.',
         'progressions': [
             ['I7', 'IV7', 'I7', 'IV7'],
@@ -172,7 +172,7 @@ def generate_progression(key: str, vibe: str) -> dict:
         'description': rule['description'],
         'roman_progression': ' - '.join(roman_progression),
         'chords': ' -> '.join(chord_progression),
-        'vibe': vibe  # agora incluímos a vibe para playChords
+        'vibe': vibe
     }
 
 
@@ -212,10 +212,10 @@ def get_vibe_settings(vibe):
     settings = {
         'feliz': {'bpm': 130, 'instrument': 29, 'style': 'batido'},
         'triste': {'bpm': 80, 'instrument': 5, 'style': 'dedilhado'},
-        'epico': {'bpm': 100, 'instrument': 30, 'style': 'batido'},
-        'calmo': {'bpm': 60, 'instrument': 2, 'style': 'dedilhado'},
-        'misterioso': {'bpm': 90, 'instrument': 80, 'style': 'dedilhado'},
-        'dancante_groovy': {'bpm': 110, 'instrument': 27, 'style': 'ritmico'}
+        'epico': {'bpm': 100, 'instrument': 29, 'style': 'batido'},
+        'calmo': {'bpm': 80, 'instrument': 2, 'style': 'calmo'},
+        'misterioso': {'bpm': 90, 'instrument': 74, 'style': 'dedilhado'},
+        'dance': {'bpm': 110, 'instrument': 33, 'style': 'ritmico'}
     }
     return settings.get(vibe, {'bpm': 100, 'instrument': 1, 'style': 'batido'})
 
@@ -241,7 +241,16 @@ def playChords(result):
                     C(chord_name, 2, 1 / 4, 0 / 8)
             )
         elif style == 'ritmico':
-            chord_obj = (C(chord_name, 2, 1 / 8, 0 / 8) ^ 2)
+            chord_obj = (
+                        C(chord_name, 2, 1/8, 0 / 8) ^
+                        C(chord_name, 2, 1/8, 0 / 8) ^
+                        C(chord_name, 2, 1/8, 0 / 8) ^
+                        C(chord_name, 2, 1/8, 0 / 8)
+            )
+
+        elif style == 'calmo':
+            chord_obj = C(chord_name, 2, 1, 0/8)
+
         else:
             chord_obj = (
                     C(chord_name, 2, 1 / 6, 0 / 8) ^
